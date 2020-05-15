@@ -3,6 +3,7 @@ from arpeggio import RegExMatch as _
 import model
 
 # define rules
+# fmt: off
 def numerical_id(): return _(r'\d+')
 
 def q_id(): return "Q", numerical_id
@@ -12,10 +13,10 @@ def p_id(): return "P", numerical_id
 def statement(): return "(", p_id, q_id, q_id, ")"
 
 def davar(): return OneOrMore(statement), EOF
+# fmt: on
 
-#visitor class
+# visitor class
 class DavarVisitor(PTNodeVisitor):
-
     def visit_numerical_id(self, node, children):
         """
         Converts numerical_id value to int.
@@ -47,6 +48,7 @@ class DavarVisitor(PTNodeVisitor):
         if self.debug:
             print(f"Instantiating Statement from {children}.")
         return model.Statement(*children)
+
     def visit_davartext(self, node, children):
         """
         Collects Statements into a List.
@@ -56,7 +58,7 @@ class DavarVisitor(PTNodeVisitor):
         return list(children)
 
 
-def parse(davartext:str, debug:bool=False) -> list:
+def parse(davartext: str, debug: bool = False) -> list:
     """
     Parses a text string in davartext into a list of Statements.
     """
