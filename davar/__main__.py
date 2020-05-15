@@ -17,7 +17,9 @@ def main():
     )
 
     args = parser.parse_args()
-    print(parsing.transcribe(args.davartext).describe(args.lang))
+    [
+        print(s.describe(args.lang)) for s in parsing.transcribe(args.davartext)
+    ]  # this is gross, i'll fix it
 
 
 if __name__ == "__main__":
