@@ -14,6 +14,10 @@ class Node(object):
     def __str__(self):
         return f"Q{self.id}"
 
+    def __eq__(self, other) -> bool:
+        # Note that this will return false for two Nodes with the same id but that (for whatever reason) have different self.datas. Not sure how I feel about that.
+        return self.__dict__ == other.__dict__
+
     def get_label(self, lang: str) -> str:
         """
         Finds the label of a WikiData item given a two letter language code.
@@ -33,6 +37,11 @@ class Rel(object):
     def __str__(self):
         return f"P{self.id}"
 
+    def __eq__(self, other) -> bool:
+        # Note that this will return false for two Nodes with the same id but that
+        # (for whatever reason) have different self.datas. Not sure how I feel about that.
+        return self.__dict__ == other.__dict__
+
     def get_label(self, lang: str) -> str:
         """
         Finds the label of a WikiData item given a two letter language code.
@@ -41,7 +50,10 @@ class Rel(object):
 
 
 class Statement(object):
-    # Defines a rel between two nodes, (i.e. a relationship between two entities) starting at node 1 and ending at node 2.
+    """
+    Defines a rel between two nodes, (i.e. a relationship between two entities) starting at node 1 and ending at node 2.
+    """
+
     def __init__(self, rel: Rel, node1: Node, node2: Node):
         self.rel = rel
         self.node1 = node1
@@ -52,6 +64,11 @@ class Statement(object):
 
     def __str__(self):
         return f"({self.rel} {self.node1} {self.node2})"
+
+    def __eq__(self, other) -> bool:
+        # Note that this will return false for two Nodes with the same id but that
+        # (for whatever reason) have different self.datas. Not sure how I feel about that.
+        return self.__dict__ == other.__dict__
 
     def describe(self, lang: str) -> str:
         """

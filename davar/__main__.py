@@ -1,6 +1,6 @@
 import argparse
-import davar.parse as parse
-import davar.model as model
+from davar import parsing
+from davar import model
 
 
 def main():
@@ -17,7 +17,7 @@ def main():
     )
 
     args = parser.parse_args()
-    print(parse.parse(args.davartext).describe(args.lang))
+    print(parsing.transcribe(args.davartext).describe(args.lang))
 
 
 if __name__ == "__main__":
