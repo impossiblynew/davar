@@ -1,5 +1,5 @@
 # davar
- An experimental interpreted international auxilliary language based on and powered by WikiData that aims to be extremely easily to translate into other languages.
+ An experimental interpreted international auxilliary language based on and powered by WikiData that aims to be extremely easy to translate into other languages.
  Currently, this package is a command line tool that translates a single davar statement into a given language.
 
 ## syntax
