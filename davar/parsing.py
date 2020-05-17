@@ -47,7 +47,7 @@ class _DavarVisitor(PTNodeVisitor):
         """
         if self.debug:
             print(f"Instantiating Statement from {children}.")
-        return model.Statement(*children)
+        return model.LabeledEdge(*children)
 
     def visit__davar(self, node, children):
         """
