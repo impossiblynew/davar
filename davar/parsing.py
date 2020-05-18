@@ -10,7 +10,13 @@ def q_id(): return "Q", numerical_id
 
 def p_id(): return "P", numerical_id
 
-def statement(): return "(", p_id, q_id, q_id, ")"
+def edge(): return "(", q_id, q_id, ")"
+
+def labelededge(): return "(", p_id, q_id, q_id, ")"
+
+def singletonstatement(): return "(", q_id, ")"
+
+def statement(): return [edge, labelededge, singletonstatement]
 
 def davar(): return OneOrMore(statement), EOF
 # fmt: on
@@ -41,13 +47,37 @@ class DavarVisitor(PTNodeVisitor):
             print(f"Instantiating Rel from {children}.")
         return model.Rel(children[0])
 
-    def visit_statement(self, node, children):
+    def visit_edge(self, node, children):
         """
-        Instantiates a Statement for each statement.
+        Instantiates a Edge for a statement with two q_ids.
         """
         if self.debug:
-            print(f"Instantiating Statement from {children}.")
+            print(f"Instantiating an Edge from {children}.")
+        return model.Edge(*children)
+
+    def visit_labelededge(self, node, children):
+        """
+        Instantiates a LabeledEdge for a statement of (p_id q_id q_id)
+        """
+        if self.debug:
+            print(f"Instantiating a LabeledEdge from {children}.")
         return model.LabeledEdge(*children)
+
+    def visit_singletonstatement(self, node, children):
+        """
+        Instantiates a singleton statement from a statement in the form (q_id)
+        """
+        if self.debug:
+            print(f"Instantiating a Statement from {children}.")
+        return model.Statement(*children)
+
+    def visit_statement(self, node, children):
+        """
+        Passes on its (hopefully only) child to the next node. 
+        """
+        if self.debug:
+            print(f"Passing first item of {children}.")
+        return children[0]
 
     def visit_davar(self, node, children):
         """
