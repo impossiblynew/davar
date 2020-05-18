@@ -33,9 +33,8 @@ def test_transcribe_multiple_Statements():
     ]
 
 
-@pytest.mark.xfail
 def test_transcribe_nested_Statements():
-    assert parsing.transcribe("(Q5482740 (P31 Q42 Q5))") == [
+    assert parsing.transcribe("(Q5482740 (P31 Q42 Q5))", debug=True) == [
         model.Edge(
             model.Node(5482740),
             model.LabeledEdge(model.Rel(31), model.Node(42), model.Node(5)),

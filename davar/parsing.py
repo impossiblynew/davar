@@ -10,11 +10,13 @@ def q_id(): return "Q", numerical_id
 
 def p_id(): return "P", numerical_id
 
-def edge(): return "(", q_id, q_id, ")"
+def node(): return [q_id, statement]
 
-def labelededge(): return "(", p_id, q_id, q_id, ")"
+def edge(): return "(", node, node, ")"
 
-def singletonstatement(): return "(", q_id, ")"
+def labelededge(): return "(", p_id, node, node, ")"
+
+def singletonstatement(): return "(", node, ")"
 
 def statement(): return [edge, labelededge, singletonstatement]
 
