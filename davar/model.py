@@ -18,11 +18,11 @@ class Node(object):
         # Note that this will return false for two Nodes with the same id but that (for whatever reason) have different self.datas. Not sure how I feel about that.
         return self.__dict__ == other.__dict__
 
-    def describe(self, lang: str) -> str:
+    def describe(self, lang: str, lvl: int = 0) -> str:
         """
         Finds the label of a WikiData item given a two letter language code.
         """
-        return self.data["labels"][lang]["value"]
+        return self.data["labels"][lang]["value"]  # returns same regardless of level
 
 
 class Rel(object):
@@ -42,11 +42,11 @@ class Rel(object):
         # (for whatever reason) have different self.datas. Not sure how I feel about that.
         return self.__dict__ == other.__dict__
 
-    def describe(self, lang: str) -> str:
+    def describe(self, lang: str, lvl: int = 0) -> str:
         """
         Finds the label of a WikiData item given a two letter language code.
         """
-        return self.data["labels"][lang]["value"]
+        return self.data["labels"][lang]["value"]  # returns same regardless of level
 
 
 class Statement(object):
@@ -66,12 +66,15 @@ class Statement(object):
     def __str__(self):
         return f"({self.sub})"
 
-    def describe(self, lang: str) -> str:
+    def describe(self, lang: str, lvl: int = 0) -> str:
         """
         Translates / describes self in language as given in two character language code form in `lang`
         """
-        sub_label = self.sub.describe(lang)
-        return f"{sub_label}."
+        sub_label = self.sub.describe(lang, lvl + 1)
+        if lvl == 0:  # give fancy formatting if it is top level
+            return f"{sub_label}."
+        else:  # give utilitarian formatting if it is not
+            return f"[{sub_label}]"
 
 
 class Edge(Statement):
@@ -89,13 +92,16 @@ class Edge(Statement):
     def __str__(self):
         return f"({self.sub} {self.ob})"
 
-    def describe(self, lang: str) -> str:
+    def describe(self, lang: str, lvl: int = 0) -> str:
         """
         Translates / describes self in language as given in two character language code form in `lang`
         """
-        sub_label = self.sub.describe(lang)
-        ob_label = self.ob.describe(lang)
-        return f"{sub_label} → {ob_label}."
+        sub_label = self.sub.describe(lang, lvl + 1)
+        ob_label = self.ob.describe(lang, lvl + 1)
+        if lvl == 0:  # give fancy formatting if it is top level
+            return f"{sub_label} → {ob_label}."
+        else:  # give utilitarian formatting if it is not
+            return f"[{sub_label} → {ob_label}]"
 
 
 class LabeledEdge(Edge):
@@ -113,11 +119,15 @@ class LabeledEdge(Edge):
     def __str__(self):
         return f"({self.rel} {self.sub} {self.ob})"
 
-    def describe(self, lang: str) -> str:
+    def describe(self, lang: str, lvl: int = 0) -> str:
         """
         Translates / describes self in language as given in two character language code form in `lang`
         """
-        rel_label = self.rel.describe(lang)
-        sub_label = self.sub.describe(lang)
-        ob_label = self.ob.describe(lang)
-        return f"{sub_label} → {ob_label} ({rel_label})."
+        rel_label = self.rel.describe(lang, lvl + 1)
+        sub_label = self.sub.describe(lang, lvl + 1)
+        ob_label = self.ob.describe(lang, lvl + 1)
+
+        if lvl == 0:  # give fancy formatting if it is top level
+            return f"{sub_label} → {ob_label} ({rel_label})."
+        else:  # give utilitarian formatting if it is not
+            return f"[{sub_label} → {ob_label} ({rel_label})]"
