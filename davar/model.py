@@ -95,7 +95,7 @@ class Edge(Statement):
         """
         sub_label = self.sub.describe(lang)
         ob_label = self.ob.describe(lang)
-        return f"{sub_label} -> {ob_label}."
+        return f"{sub_label} → {ob_label}."
 
 
 class LabeledEdge(Edge):
@@ -120,4 +120,4 @@ class LabeledEdge(Edge):
         rel_label = self.rel.describe(lang)
         sub_label = self.sub.describe(lang)
         ob_label = self.ob.describe(lang)
-        return f"{sub_label} -> {ob_label} ({rel_label})."
+        return f"{sub_label} → {ob_label} ({rel_label})."
