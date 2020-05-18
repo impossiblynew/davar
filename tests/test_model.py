@@ -81,7 +81,7 @@ class TestStatementNested:
     def test_describe(self, example_statement):
         assert (
             model.Statement(example_statement).describe("en")
-            == "Douglas Adams -> human (instance of).."
+            == "Douglas Adams → human (instance of).."
         )
 
 
@@ -96,7 +96,7 @@ class TestEdge:
 
     def test_describe(self, cached_node_Q42, cached_node_Q5):
         s = model.Edge(cached_node_Q42, cached_node_Q5)
-        assert s.describe("en") == "Douglas Adams -> human."
+        assert s.describe("en") == "Douglas Adams → human."
 
 
 class TestEdgeNested:
@@ -114,7 +114,7 @@ class TestEdgeNested:
     def test_describe(self, example_statement, cached_node_Q42):
         assert (
             model.Edge(cached_node_Q42, example_statement).describe("en")
-            == "Douglas Adams -> Douglas Adams -> human (instance of).."
+            == "Douglas Adams → Douglas Adams → human (instance of).."
         )
 
 
@@ -129,7 +129,7 @@ class TestLabeledEdge:
 
     def test_describe(self, cached_rel_P31, cached_node_Q42, cached_node_Q5):
         s = model.LabeledEdge(cached_rel_P31, cached_node_Q42, cached_node_Q5)
-        assert s.describe("en") == "Douglas Adams -> human (instance of)."
+        assert s.describe("en") == "Douglas Adams → human (instance of)."
 
 
 class TestLabeledEdgeNested:
@@ -150,5 +150,5 @@ class TestLabeledEdgeNested:
             model.LabeledEdge(
                 cached_rel_P31, cached_node_Q42, example_statement
             ).describe("en")
-            == "Douglas Adams -> Douglas Adams -> human (instance of). (instance of)."
+            == "Douglas Adams → Douglas Adams → human (instance of). (instance of)."
         )
