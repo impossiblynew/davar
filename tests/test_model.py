@@ -26,6 +26,12 @@ def cached_rel_P31():
     return model.Rel(31)
 
 
+@pytest.fixture(scope="module")
+def example_statement(cached_rel_P31, cached_node_Q42, cached_node_Q5):
+    # this is not used in tests that are of ability to construct a statement, only where that is the set up, like nesting tests.
+    return model.LabeledEdge(cached_rel_P31, cached_node_Q42, cached_node_Q5)
+
+
 class TestNode:
     def test_describe(self, cached_node_Q42):
         assert cached_node_Q42.describe("en") == "Douglas Adams"
@@ -62,6 +68,23 @@ class TestStatement:
         assert s.describe("en") == "Douglas Adams."
 
 
+class TestStatementNested:
+    def test_repr(self, example_statement):
+        assert (
+            repr(model.Statement(example_statement))
+            == "Statement(LabeledEdge(Rel(31), Node(42), Node(5)))"
+        )
+
+    def test_str(self, example_statement):
+        assert str(model.Statement(example_statement)) == "((P31 Q42 Q5))"
+
+    def test_describe(self, example_statement):
+        assert (
+            model.Statement(example_statement).describe("en")
+            == "Douglas Adams -> human (instance of).."
+        )
+
+
 class TestEdge:
     def test_repr(self, cached_node_Q42, cached_node_Q5):
         s = model.Edge(cached_node_Q42, cached_node_Q5)
@@ -76,6 +99,25 @@ class TestEdge:
         assert s.describe("en") == "Douglas Adams -> human."
 
 
+class TestEdgeNested:
+    def test_repr(self, example_statement, cached_node_Q42):
+        assert (
+            repr(model.Edge(cached_node_Q42, example_statement))
+            == "Edge(Node(42), LabeledEdge(Rel(31), Node(42), Node(5)))"
+        )
+
+    def test_str(self, example_statement, cached_node_Q42):
+        assert (
+            str(model.Edge(cached_node_Q42, example_statement)) == "(Q42 (P31 Q42 Q5))"
+        )
+
+    def test_describe(self, example_statement, cached_node_Q42):
+        assert (
+            model.Edge(cached_node_Q42, example_statement).describe("en")
+            == "Douglas Adams -> Douglas Adams -> human (instance of).."
+        )
+
+
 class TestLabeledEdge:
     def test_repr(self, cached_rel_P31, cached_node_Q42, cached_node_Q5):
         s = model.LabeledEdge(cached_rel_P31, cached_node_Q42, cached_node_Q5)
@@ -88,3 +130,25 @@ class TestLabeledEdge:
     def test_describe(self, cached_rel_P31, cached_node_Q42, cached_node_Q5):
         s = model.LabeledEdge(cached_rel_P31, cached_node_Q42, cached_node_Q5)
         assert s.describe("en") == "Douglas Adams -> human (instance of)."
+
+
+class TestLabeledEdgeNested:
+    def test_repr(self, example_statement, cached_rel_P31, cached_node_Q42):
+        assert (
+            repr(model.LabeledEdge(cached_rel_P31, cached_node_Q42, example_statement))
+            == "LabeledEdge(Rel(31), Node(42), LabeledEdge(Rel(31), Node(42), Node(5)))"
+        )
+
+    def test_str(self, example_statement, cached_rel_P31, cached_node_Q42):
+        assert (
+            str(model.LabeledEdge(cached_rel_P31, cached_node_Q42, example_statement))
+            == "(P31 Q42 (P31 Q42 Q5))"
+        )
+
+    def test_describe(self, example_statement, cached_rel_P31, cached_node_Q42):
+        assert (
+            model.LabeledEdge(
+                cached_rel_P31, cached_node_Q42, example_statement
+            ).describe("en")
+            == "Douglas Adams -> Douglas Adams -> human (instance of). (instance of)."
+        )
