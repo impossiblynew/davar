@@ -2,7 +2,7 @@ from qwikidata.entity import WikidataItem, WikidataProperty
 from qwikidata.linked_data_interface import get_entity_dict_from_api as get_dict
 
 
-class Node(object):
+class Node:
     # A noun, item, entity, etc. Right now is simply a container for Wikidata entity IDs.
     def __init__(self, id: int):
         self.id = id
@@ -25,7 +25,7 @@ class Node(object):
         return self.data["labels"][lang]["value"]  # returns same regardless of level
 
 
-class Rel(object):
+class Rel:
     # A relationship between nodes. Right now is simply a container for Wikidata property IDs.
     def __init__(self, id: int):
         self.id = id
@@ -49,7 +49,7 @@ class Rel(object):
         return self.data["labels"][lang]["value"]  # returns same regardless of level
 
 
-class Statement(object):
+class Statement:
     """
     Most basic possible statement, which involves only a subject.
     """
