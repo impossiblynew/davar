@@ -31,3 +31,13 @@ def test_transcribe_multiple_Statements():
         model.Edge(model.Node(5), model.Node(42)),
         model.LabeledEdge(model.Rel(106), model.Node(3236990), model.Node(5482740)),
     ]
+
+
+@pytest.mark.xfail
+def test_transcribe_nested_Statements():
+    assert parsing.transcribe("(Q5482740 (P31 Q42 Q5))") == [
+        model.Edge(
+            model.Node(5482740),
+            model.LabeledEdge(model.Rel(31), model.Node(42), model.Node(5)),
+        )
+    ]
