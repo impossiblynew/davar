@@ -1,6 +1,5 @@
 import argparse
-from davar import parsing
-from davar import model
+from davar.utils import Davar
 
 
 def main():
@@ -9,17 +8,12 @@ def main():
     )
     parser.add_argument("davartext", metavar="DAVARTEXT", type=str)
     parser.add_argument(
-        "-l",
-        "--lang",
-        required=False,
-        default=None,
-        help="2 character language code. If not included, davartext will not be translated as it is intepreted.",
+        "-l", "--lang", required=True, default=None, help="2 character language code.",
     )
 
     args = parser.parse_args()
-    [
-        print(s.describe(args.lang)) for s in parsing.transcribe(args.davartext)
-    ]  # this is gross, i'll fix it
+    for s in Davar.from_davartext(args.davartext).describe(args.lang):
+        print(s)
 
 
 if __name__ == "__main__":
