@@ -1,12 +1,11 @@
-from qwikidata.entity import WikidataItem, WikidataProperty
-from qwikidata.linked_data_interface import get_entity_dict_from_api as get_dict
+from wikidata.client import Client
 
 
 class Node:
     # A noun, item, entity, etc. Right now is simply a container for Wikidata entity IDs.
     def __init__(self, id: int):
         self.id = id
-        self.data = get_dict(f"Q{id}")
+        self.data = Client().get(f"Q{id}")
 
     def __repr__(self):
         return f"Node({self.id})"
@@ -21,14 +20,14 @@ class Node:
         """
         Finds the label of a WikiData item given a two letter language code.
         """
-        return self.data["labels"][lang]["value"]  # returns same regardless of level
+        return self.data.label[lang]
 
 
 class Rel:
     # A relationship between nodes. Right now is simply a container for Wikidata property IDs.
     def __init__(self, id: int):
         self.id = id
-        self.data = get_dict(f"P{id}")
+        self.data = Client().get(f"P{id}")
 
     def __repr__(self):
         return f"Rel({self.id})"
@@ -43,7 +42,7 @@ class Rel:
         """
         Finds the label of a WikiData item given a two letter language code.
         """
-        return self.data["labels"][lang]["value"]  # returns same regardless of level
+        return self.data.label[lang]  # returns same regardless of level
 
 
 class Statement:
