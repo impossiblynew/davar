@@ -5,18 +5,21 @@ import davar.model as m
 
 @pytest.fixture(scope="module")
 def flat_statement():
-    return m.LabeledEdge(m.Rel("P31"), m.Node("Q3236990"), m.Node("Q5482740"))
+    return m.LabeledEdge(
+        m.Rel("P31"), m.WikidataItem("Q3236990"), m.WikidataItem("Q5482740")
+    )
 
 
 @pytest.fixture(scope="module")
 def singleton_statement():
-    return m.Statement(m.Node("Q2013"))
+    return m.Statement(m.WikidataItem("Q2013"))
 
 
 @pytest.fixture(scope="module")
 def nested_statement():
     return m.Edge(
-        m.Node("Q2"), m.LabeledEdge(m.Rel("P31"), m.Node("Q42"), m.Node("Q5"))
+        m.WikidataItem("Q2"),
+        m.LabeledEdge(m.Rel("P31"), m.WikidataItem("Q42"), m.WikidataItem("Q5")),
     )
 
 

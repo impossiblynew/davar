@@ -39,7 +39,7 @@ class DavarVisitor(PTNodeVisitor):
         """
         if self.debug:
             print(f"Instantiating Node from {children}.")
-        return model.Node(f"Q{children[0]}")
+        return model.WikidataItem(f"Q{children[0]}")
 
     def visit_p_id(self, node, children):
         """

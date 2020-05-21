@@ -2,19 +2,38 @@ from wikidata.client import Client
 
 
 class Node:
-    # A noun, item, entity, etc. Right now is simply a container for Wikidata entity IDs.
+    """
+    Informal abstract class for Nodes. Implements some methods but will throw a NotImplementedError if .describe() is used.
+    """
+
     def __init__(self, id: str):
         self.id = id
-        self.data = Client().get(id)
 
     def __repr__(self):
-        return f'Node("{self.id}")'
+        return f'Node("{self.id}")'  # TODO: Try replacing with automatic
 
     def __str__(self):
-        return f"{self.id}"
+        return self.id
 
     def __eq__(self, other) -> bool:
         return self.id == other.id
+
+    def describe(self, lang: str, lvl: int = 0) -> str:
+        # informal abstract method
+        raise NotImplementedError
+
+
+class WikidataItem(Node):
+    """
+    Class for WikidataItems, a kind of node. Initialize with a string giving the Wikidata Item Identifier. Calling describe will give the label in the requested language.
+    """
+
+    def __init__(self, id: str):
+        super().__init__(id)
+        self.data = Client().get(id)
+
+    def __repr__(self):
+        return f'WikidataItem("{self.id}")'
 
     def describe(self, lang: str, lvl: int = 0) -> str:
         """
