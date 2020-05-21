@@ -3,7 +3,7 @@ name = "davar"
 version = "0.1.0"
 description = "An experimental interpreted international auxiliary language."
 authors = ["Impossibly New <newlyimpossible@gmail.com>"]
-license = "MIT"
+license = "MIT License"
 
 [tool.poetry.dependencies]
 python = "^3.7"
