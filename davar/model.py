@@ -15,8 +15,7 @@ class Node:
         return f"Q{self.id}"
 
     def __eq__(self, other) -> bool:
-        # Note that this will return false for two Nodes with the same id but that (for whatever reason) have different self.datas. Not sure how I feel about that.
-        return self.__dict__ == other.__dict__
+        return self.id == other.id
 
     def describe(self, lang: str, lvl: int = 0) -> str:
         """
@@ -38,9 +37,7 @@ class Rel:
         return f"P{self.id}"
 
     def __eq__(self, other) -> bool:
-        # Note that this will return false for two Nodes with the same id but that
-        # (for whatever reason) have different self.datas. Not sure how I feel about that.
-        return self.__dict__ == other.__dict__
+        return self.id == other.id
 
     def describe(self, lang: str, lvl: int = 0) -> str:
         """
@@ -58,7 +55,7 @@ class Statement:
         self.sub = sub
 
     def __eq__(self, other) -> bool:
-        return self.__dict__ == other.__dict__
+        return self.__dict__ == other.__dict__  # FIXME: messy, bad
 
     def __repr__(self):
         return f"Statement({repr(self.sub)})"
