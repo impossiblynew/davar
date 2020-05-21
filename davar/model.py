@@ -10,7 +10,7 @@ class Node:
         self.id = id
 
     def __repr__(self):
-        return f'Node("{self.id}")'  # TODO: Try replacing with automatic
+        return f'{type(self).__name__}("{self.id}")'
 
     def __str__(self):
         return self.id
@@ -31,9 +31,6 @@ class WikidataItem(Node):
     def __init__(self, id: str):
         super().__init__(id)
         self.data = Client().get(id)
-
-    def __repr__(self):
-        return f'WikidataItem("{self.id}")'
 
     def describe(self, lang: str, lvl: int = 0) -> str:
         """
