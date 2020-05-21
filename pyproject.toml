@@ -1,9 +1,27 @@
 [tool.poetry]
 name = "davar"
-version = "0.1.0"
+version = "0.1.1"
 description = "An experimental interpreted international auxiliary language."
 authors = ["Impossibly New <newlyimpossible@gmail.com>"]
-license = "MIT License"
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/impossiblynew/davar"
+repository = "https://github.com/impossiblynew/davar"
+keywords = ["language", "translation", "WikiData"]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Environment :: Console",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Database",
+    "Topic :: Communications",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content :: Wiki",
+    "Topic :: Text Processing :: Linguistic",
+]
+
+include = [
+    "LICENSE",
+]
 
 [tool.poetry.dependencies]
 python = "^3.7"
