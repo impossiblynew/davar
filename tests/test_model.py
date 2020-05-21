@@ -5,25 +5,25 @@ import pytest
 @pytest.fixture(scope="module")
 def cached_node_Q42():
     """
-    Contains a cached copy of model.Node(42)
+    Contains a cached copy of model.Node("Q42")
     """
-    return model.Node(42)
+    return model.Node("Q42")
 
 
 @pytest.fixture(scope="module")
 def cached_node_Q5():
     """
-    Contains a cached copy of model.Node(5)
+    Contains a cached copy of model.Node("Q5")
     """
-    return model.Node(5)
+    return model.Node("Q5")
 
 
 @pytest.fixture(scope="module")
 def cached_rel_P31():
     """
-    Contains a cached copy of model.Rel(5)
+    Contains a cached copy of model.Rel("P5")
     """
-    return model.Rel(31)
+    return model.Rel("P31")
 
 
 @pytest.fixture(scope="module")
@@ -37,7 +37,7 @@ class TestNode:
         assert cached_node_Q42.describe("en") == "Douglas Adams"
 
     def test_repr(self, cached_node_Q42):
-        assert repr(cached_node_Q42) == "Node(42)"
+        assert repr(cached_node_Q42) == 'Node("Q42")'
 
     def test_str(self, cached_node_Q42):
         assert str(cached_node_Q42) == "Q42"
@@ -48,7 +48,7 @@ class TestRel:
         assert cached_rel_P31.describe("en") == "instance of"
 
     def test_repr(self, cached_rel_P31):
-        assert repr(cached_rel_P31) == "Rel(31)"
+        assert repr(cached_rel_P31) == 'Rel("P31")'
 
     def test_str(self, cached_rel_P31):
         assert str(cached_rel_P31) == "P31"
@@ -57,7 +57,7 @@ class TestRel:
 class TestStatement:
     def test_repr(self, cached_node_Q42):
         s = model.Statement(cached_node_Q42)
-        assert repr(s) == "Statement(Node(42))"
+        assert repr(s) == 'Statement(Node("Q42"))'
 
     def test_str(self, cached_node_Q42):
         s = model.Statement(cached_node_Q42)
@@ -76,7 +76,7 @@ class TestStatementNested:
     def test_repr(self, example_statement):
         assert (
             repr(model.Statement(example_statement))
-            == "Statement(LabeledEdge(Rel(31), Node(42), Node(5)))"
+            == 'Statement(LabeledEdge(Rel("P31"), Node("Q42"), Node("Q5")))'
         )
 
     def test_str(self, example_statement):
@@ -92,7 +92,7 @@ class TestStatementNested:
 class TestEdge:
     def test_repr(self, cached_node_Q42, cached_node_Q5):
         s = model.Edge(cached_node_Q42, cached_node_Q5)
-        assert repr(s) == "Edge(Node(42), Node(5))"
+        assert repr(s) == 'Edge(Node("Q42"), Node("Q5"))'
 
     def test_str(self, cached_node_Q42, cached_node_Q5):
         s = model.Edge(cached_node_Q42, cached_node_Q5)
@@ -111,7 +111,7 @@ class TestEdgeNested:
     def test_repr(self, example_statement, cached_node_Q42):
         assert (
             repr(model.Edge(cached_node_Q42, example_statement))
-            == "Edge(Node(42), LabeledEdge(Rel(31), Node(42), Node(5)))"
+            == 'Edge(Node("Q42"), LabeledEdge(Rel("P31"), Node("Q42"), Node("Q5")))'
         )
 
     def test_str(self, example_statement, cached_node_Q42):
@@ -129,7 +129,7 @@ class TestEdgeNested:
 class TestLabeledEdge:
     def test_repr(self, cached_rel_P31, cached_node_Q42, cached_node_Q5):
         s = model.LabeledEdge(cached_rel_P31, cached_node_Q42, cached_node_Q5)
-        assert repr(s) == "LabeledEdge(Rel(31), Node(42), Node(5))"
+        assert repr(s) == 'LabeledEdge(Rel("P31"), Node("Q42"), Node("Q5"))'
 
     def test_str(self, cached_rel_P31, cached_node_Q42, cached_node_Q5):
         s = model.LabeledEdge(cached_rel_P31, cached_node_Q42, cached_node_Q5)
@@ -148,7 +148,7 @@ class TestLabeledEdgeNested:
     def test_repr(self, example_statement, cached_rel_P31, cached_node_Q42):
         assert (
             repr(model.LabeledEdge(cached_rel_P31, cached_node_Q42, example_statement))
-            == "LabeledEdge(Rel(31), Node(42), LabeledEdge(Rel(31), Node(42), Node(5)))"
+            == 'LabeledEdge(Rel("P31"), Node("Q42"), LabeledEdge(Rel("P31"), Node("Q42"), Node("Q5")))'
         )
 
     def test_str(self, example_statement, cached_rel_P31, cached_node_Q42):

@@ -3,15 +3,15 @@ from wikidata.client import Client
 
 class Node:
     # A noun, item, entity, etc. Right now is simply a container for Wikidata entity IDs.
-    def __init__(self, id: int):
+    def __init__(self, id: str):
         self.id = id
-        self.data = Client().get(f"Q{id}")
+        self.data = Client().get(id)
 
     def __repr__(self):
-        return f"Node({self.id})"
+        return f'Node("{self.id}")'
 
     def __str__(self):
-        return f"Q{self.id}"
+        return f"{self.id}"
 
     def __eq__(self, other) -> bool:
         return self.id == other.id
@@ -25,15 +25,15 @@ class Node:
 
 class Rel:
     # A relationship between nodes. Right now is simply a container for Wikidata property IDs.
-    def __init__(self, id: int):
+    def __init__(self, id: str):
         self.id = id
-        self.data = Client().get(f"P{id}")
+        self.data = Client().get(id)
 
     def __repr__(self):
-        return f"Rel({self.id})"
+        return f'Rel("{self.id}")'
 
     def __str__(self):
-        return f"P{self.id}"
+        return f"{self.id}"
 
     def __eq__(self, other) -> bool:
         return self.id == other.id

@@ -39,7 +39,7 @@ class DavarVisitor(PTNodeVisitor):
         """
         if self.debug:
             print(f"Instantiating Node from {children}.")
-        return model.Node(children[0])
+        return model.Node(f"Q{children[0]}")
 
     def visit_p_id(self, node, children):
         """
@@ -47,7 +47,7 @@ class DavarVisitor(PTNodeVisitor):
         """
         if self.debug:
             print(f"Instantiating Rel from {children}.")
-        return model.Rel(children[0])
+        return model.Rel(f"P{children[0]}")
 
     def visit_edge(self, node, children):
         """
