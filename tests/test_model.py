@@ -19,18 +19,20 @@ def cached_WikidataItem_Q5():
 
 
 @pytest.fixture(scope="module")
-def cached_rel_P31():
+def cached_WikidataProperty_P31():
     """
-    Contains a cached copy of m.Rel("P5")
+    Contains a cached copy of m.WikidataProperty("P5")
     """
-    return m.Rel("P31")
+    return m.WikidataProperty("P31")
 
 
 @pytest.fixture(scope="module")
-def example_statement(cached_rel_P31, cached_WikidataItem_Q42, cached_WikidataItem_Q5):
+def example_statement(
+    cached_WikidataProperty_P31, cached_WikidataItem_Q42, cached_WikidataItem_Q5
+):
     # this is not used in tests that are of ability to construct a statement, only where that is the set up, like nesting tests.
     return m.LabeledEdge(
-        cached_rel_P31, cached_WikidataItem_Q42, cached_WikidataItem_Q5
+        cached_WikidataProperty_P31, cached_WikidataItem_Q42, cached_WikidataItem_Q5
     )
 
 
@@ -39,6 +41,11 @@ def test_abstract_node_describe():
     n = m.Node("42")
     with pytest.raises(NotImplementedError):
         n.describe("en")
+
+
+def test_abstract_DavarWord_validate():
+    with pytest.raises(NotImplementedError):
+        m.DavarWord("Q42")
 
 
 class TestWikidataItem:
@@ -56,15 +63,15 @@ class TestWikidataItem:
             m.WikidataItem("Q42Z")
 
 
-class TestRel:
-    def test_describe(self, cached_rel_P31):
-        assert cached_rel_P31.describe("en") == "instance of"
+class TestWikidataProperty:
+    def test_describe(self, cached_WikidataProperty_P31):
+        assert cached_WikidataProperty_P31.describe("en") == "instance of"
 
-    def test_repr(self, cached_rel_P31):
-        assert repr(cached_rel_P31) == 'Rel("P31")'
+    def test_repr(self, cached_WikidataProperty_P31):
+        assert repr(cached_WikidataProperty_P31) == 'WikidataProperty("P31")'
 
-    def test_str(self, cached_rel_P31):
-        assert str(cached_rel_P31) == "P31"
+    def test_str(self, cached_WikidataProperty_P31):
+        assert str(cached_WikidataProperty_P31) == "P31"
 
 
 class TestStatement:
@@ -89,7 +96,7 @@ class TestStatementNested:
     def test_repr(self, example_statement):
         assert (
             repr(m.Statement(example_statement))
-            == 'Statement(LabeledEdge(Rel("P31"), WikidataItem("Q42"), WikidataItem("Q5")))'
+            == 'Statement(LabeledEdge(WikidataProperty("P31"), WikidataItem("Q42"), WikidataItem("Q5")))'
         )
 
     def test_str(self, example_statement):
@@ -124,7 +131,7 @@ class TestEdgeNested:
     def test_repr(self, example_statement, cached_WikidataItem_Q42):
         assert (
             repr(m.Edge(cached_WikidataItem_Q42, example_statement))
-            == 'Edge(WikidataItem("Q42"), LabeledEdge(Rel("P31"), WikidataItem("Q42"), WikidataItem("Q5")))'
+            == 'Edge(WikidataItem("Q42"), LabeledEdge(WikidataProperty("P31"), WikidataItem("Q42"), WikidataItem("Q5")))'
         )
 
     def test_str(self, example_statement, cached_WikidataItem_Q42):
@@ -142,64 +149,88 @@ class TestEdgeNested:
 
 class TestLabeledEdge:
     def test_repr(
-        self, cached_rel_P31, cached_WikidataItem_Q42, cached_WikidataItem_Q5
+        self,
+        cached_WikidataProperty_P31,
+        cached_WikidataItem_Q42,
+        cached_WikidataItem_Q5,
     ):
         s = m.LabeledEdge(
-            cached_rel_P31, cached_WikidataItem_Q42, cached_WikidataItem_Q5
+            cached_WikidataProperty_P31, cached_WikidataItem_Q42, cached_WikidataItem_Q5
         )
         assert (
             repr(s)
-            == 'LabeledEdge(Rel("P31"), WikidataItem("Q42"), WikidataItem("Q5"))'
+            == 'LabeledEdge(WikidataProperty("P31"), WikidataItem("Q42"), WikidataItem("Q5"))'
         )
 
-    def test_str(self, cached_rel_P31, cached_WikidataItem_Q42, cached_WikidataItem_Q5):
+    def test_str(
+        self,
+        cached_WikidataProperty_P31,
+        cached_WikidataItem_Q42,
+        cached_WikidataItem_Q5,
+    ):
         s = m.LabeledEdge(
-            cached_rel_P31, cached_WikidataItem_Q42, cached_WikidataItem_Q5
+            cached_WikidataProperty_P31, cached_WikidataItem_Q42, cached_WikidataItem_Q5
         )
         assert str(s) == "(P31 Q42 Q5)"
 
     def test_describe(
-        self, cached_rel_P31, cached_WikidataItem_Q42, cached_WikidataItem_Q5
+        self,
+        cached_WikidataProperty_P31,
+        cached_WikidataItem_Q42,
+        cached_WikidataItem_Q5,
     ):
         s = m.LabeledEdge(
-            cached_rel_P31, cached_WikidataItem_Q42, cached_WikidataItem_Q5
+            cached_WikidataProperty_P31, cached_WikidataItem_Q42, cached_WikidataItem_Q5
         )
         assert s.describe("en") == "Douglas Adams → human (instance of)."
 
     def test_describe_lvl(
-        self, cached_rel_P31, cached_WikidataItem_Q42, cached_WikidataItem_Q5
+        self,
+        cached_WikidataProperty_P31,
+        cached_WikidataItem_Q42,
+        cached_WikidataItem_Q5,
     ):
         s = m.LabeledEdge(
-            cached_rel_P31, cached_WikidataItem_Q42, cached_WikidataItem_Q5
+            cached_WikidataProperty_P31, cached_WikidataItem_Q42, cached_WikidataItem_Q5
         )
         assert s.describe("en", lvl=1) == "[Douglas Adams → human (instance of)]"
 
 
 class TestLabeledEdgeNested:
-    def test_repr(self, example_statement, cached_rel_P31, cached_WikidataItem_Q42):
+    def test_repr(
+        self, example_statement, cached_WikidataProperty_P31, cached_WikidataItem_Q42
+    ):
         assert (
             repr(
                 m.LabeledEdge(
-                    cached_rel_P31, cached_WikidataItem_Q42, example_statement
+                    cached_WikidataProperty_P31,
+                    cached_WikidataItem_Q42,
+                    example_statement,
                 )
             )
-            == 'LabeledEdge(Rel("P31"), WikidataItem("Q42"), LabeledEdge(Rel("P31"), WikidataItem("Q42"), WikidataItem("Q5")))'
+            == 'LabeledEdge(WikidataProperty("P31"), WikidataItem("Q42"), LabeledEdge(WikidataProperty("P31"), WikidataItem("Q42"), WikidataItem("Q5")))'
         )
 
-    def test_str(self, example_statement, cached_rel_P31, cached_WikidataItem_Q42):
+    def test_str(
+        self, example_statement, cached_WikidataProperty_P31, cached_WikidataItem_Q42
+    ):
         assert (
             str(
                 m.LabeledEdge(
-                    cached_rel_P31, cached_WikidataItem_Q42, example_statement
+                    cached_WikidataProperty_P31,
+                    cached_WikidataItem_Q42,
+                    example_statement,
                 )
             )
             == "(P31 Q42 (P31 Q42 Q5))"
         )
 
-    def test_describe(self, example_statement, cached_rel_P31, cached_WikidataItem_Q42):
+    def test_describe(
+        self, example_statement, cached_WikidataProperty_P31, cached_WikidataItem_Q42
+    ):
         assert (
             m.LabeledEdge(
-                cached_rel_P31, cached_WikidataItem_Q42, example_statement
+                cached_WikidataProperty_P31, cached_WikidataItem_Q42, example_statement
             ).describe("en")
             == "Douglas Adams → [Douglas Adams → human (instance of)] (instance of)."
         )

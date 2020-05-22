@@ -6,7 +6,9 @@ import davar.model as m
 @pytest.fixture(scope="module")
 def flat_statement():
     return m.LabeledEdge(
-        m.Rel("P31"), m.WikidataItem("Q3236990"), m.WikidataItem("Q5482740")
+        m.WikidataProperty("P31"),
+        m.WikidataItem("Q3236990"),
+        m.WikidataItem("Q5482740"),
     )
 
 
@@ -19,7 +21,9 @@ def singleton_statement():
 def nested_statement():
     return m.Edge(
         m.WikidataItem("Q2"),
-        m.LabeledEdge(m.Rel("P31"), m.WikidataItem("Q42"), m.WikidataItem("Q5")),
+        m.LabeledEdge(
+            m.WikidataProperty("P31"), m.WikidataItem("Q42"), m.WikidataItem("Q5")
+        ),
     )
 
 

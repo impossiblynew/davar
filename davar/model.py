@@ -2,9 +2,9 @@ from wikidata.client import Client
 from re import compile
 
 
-class Node:
+class DavarWord:
     """
-    Informal abstract class for Nodes. Implements some methods but will throw a 
+    Informal abstract class for Nodes and Rels. Implements some methods but will throw a 
     NotImplementedError if .describe() is used.
     """
 
@@ -36,6 +36,28 @@ class Node:
         raise NotImplementedError
 
 
+class Node(DavarWord):
+    """
+    Empty class for Nodes.
+    Nodes and Rels share a lot of code. This class exists so that subclasses of Node and
+    subclasses of Rel can be distinguished.
+    """
+
+    def __init__(self, id):
+        super().__init__(id)
+
+
+class Rel(DavarWord):
+    """
+    Empty class for Nodes.
+    Nodes and Rels share a lot of code. This class exists so that subclasses of Node and
+    subclasses of Rel can be distinguished.
+    """
+
+    def __init__(self, id):
+        super().__init__(id)
+
+
 class WikidataItem(Node):
     """
     Class for WikidataItems, a kind of node. Initialize with a string giving the
@@ -61,24 +83,22 @@ class WikidataItem(Node):
         return self.data.label[lang]
 
 
-class Rel:
+class WikidataProperty(Rel):
     """
     A relationship between nodes. Right now is simply a container for Wikidata property
     IDs.
     """
 
+    _compiled_id_regex = compile(r"P\d+")
+
     def __init__(self, id: str):
-        self.id = id
+        super().__init__(id)
         self.data = Client().get(id)
 
-    def __repr__(self):
-        return f'Rel("{self.id}")'
-
-    def __str__(self):
-        return f"{self.id}"
-
-    def __eq__(self, other) -> bool:
-        return self.id == other.id
+    @classmethod
+    def _validate_id(cls, id):
+        if cls._compiled_id_regex.fullmatch(id) == None:
+            raise ValueError(f"{id} is not a valid Wikidata Property ID")
 
     def describe(self, lang: str, lvl: int = 0) -> str:
         """
