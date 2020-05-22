@@ -3,7 +3,8 @@ from wikidata.client import Client
 
 class Node:
     """
-    Informal abstract class for Nodes. Implements some methods but will throw a NotImplementedError if .describe() is used.
+    Informal abstract class for Nodes. Implements some methods but will throw a 
+    NotImplementedError if .describe() is used.
     """
 
     def __init__(self, id: str):
@@ -25,7 +26,9 @@ class Node:
 
 class WikidataItem(Node):
     """
-    Class for WikidataItems, a kind of node. Initialize with a string giving the Wikidata Item Identifier. Calling describe will give the label in the requested language.
+    Class for WikidataItems, a kind of node. Initialize with a string giving the
+    Wikidata Item Identifier. Calling describe will give the label in the requested
+    language.
     """
 
     def __init__(self, id: str):
@@ -40,7 +43,11 @@ class WikidataItem(Node):
 
 
 class Rel:
-    # A relationship between nodes. Right now is simply a container for Wikidata property IDs.
+    """
+    A relationship between nodes. Right now is simply a container for Wikidata property
+    IDs.
+    """
+
     def __init__(self, id: str):
         self.id = id
         self.data = Client().get(id)
@@ -80,7 +87,8 @@ class Statement:
 
     def describe(self, lang: str, lvl: int = 0) -> str:
         """
-        Translates / describes self in language as given in two character language code form in `lang`
+        Translates / describes self in language as given in two character language code
+        form in `lang`
         """
         sub_label = self.sub.describe(lang, lvl + 1)
         if lvl == 0:  # give fancy formatting if it is top level
@@ -106,7 +114,8 @@ class Edge(Statement):
 
     def describe(self, lang: str, lvl: int = 0) -> str:
         """
-        Translates / describes self in language as given in two character language code form in `lang`
+        Translates / describes self in language as given in two character language code
+        form in `lang`
         """
         sub_label = self.sub.describe(lang, lvl + 1)
         ob_label = self.ob.describe(lang, lvl + 1)
@@ -118,7 +127,8 @@ class Edge(Statement):
 
 class LabeledEdge(Edge):
     """
-    Defines a relationship between a subject Node and an object Node which is labeled with a Rel.
+    Defines a relationship between a subject Node and an object Node which is labeled
+    with a Rel.
     """
 
     def __init__(self, rel: Rel, sub, ob):
@@ -133,7 +143,8 @@ class LabeledEdge(Edge):
 
     def describe(self, lang: str, lvl: int = 0) -> str:
         """
-        Translates / describes self in language as given in two character language code form in `lang`
+        Translates / describes self in language as given in two character language code
+        form in `lang`
         """
         rel_label = self.rel.describe(lang, lvl + 1)
         sub_label = self.sub.describe(lang, lvl + 1)
