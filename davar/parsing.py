@@ -39,15 +39,15 @@ class DavarVisitor(PTNodeVisitor):
         """
         if self.debug:
             print(f"Instantiating Node from {children}.")
-        return model.Node(children[0])
+        return model.WikidataItem(f"Q{children[0]}")
 
     def visit_p_id(self, node, children):
         """
-        Instantiates a Rel for each p_id.
+        Instantiates a WikidataProperty for each p_id.
         """
         if self.debug:
-            print(f"Instantiating Rel from {children}.")
-        return model.Rel(children[0])
+            print(f"Instantiating WikidataProperty from {children}.")
+        return model.WikidataProperty(f"P{children[0]}")
 
     def visit_edge(self, node, children):
         """

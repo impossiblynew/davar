@@ -4,7 +4,8 @@ from davar.model import Statement
 
 class Davar:
     """
-    A class for holding davar statements, acting as the analog for some amount of davartext.
+    A class for holding davar statements, acting as the analog for some amount of
+    davartext.
     """
 
     def __init__(self, statements: list):
