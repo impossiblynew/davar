@@ -1,4 +1,5 @@
 from wikidata.client import Client
+from re import compile
 
 
 class Node:
@@ -8,7 +9,15 @@ class Node:
     """
 
     def __init__(self, id: str):
+        self._validate_id(id)
         self.id = id
+
+    def _validate_id(self, id):  # Not sure if this should be a static or class method
+        """
+        Informal abstract method for validating id at init. Raises error if the id
+        is not valid.
+        """
+        raise NotImplementedError
 
     def __repr__(self):
         return f'{type(self).__name__}("{self.id}")'
@@ -20,7 +29,10 @@ class Node:
         return self.id == other.id
 
     def describe(self, lang: str, lvl: int = 0) -> str:
-        # informal abstract method
+        """
+        Informal abstract method. This should describe itself in the given language,
+        modulating output according to lvl.
+        """
         raise NotImplementedError
 
 
@@ -31,9 +43,16 @@ class WikidataItem(Node):
     language.
     """
 
+    _compiled_id_regex = compile(r"Q\d+")
+
     def __init__(self, id: str):
         super().__init__(id)
         self.data = Client().get(id)
+
+    @classmethod
+    def _validate_id(cls, id: str):
+        if cls._compiled_id_regex.fullmatch(id) == None:
+            raise ValueError(f"{id} is not a valid Wikidata Item ID")
 
     def describe(self, lang: str, lvl: int = 0) -> str:
         """
