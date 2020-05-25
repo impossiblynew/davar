@@ -1,5 +1,7 @@
 [<img src="https://upload.wikimedia.org/wikipedia/commons/2/20/Wikidata_stamp_rec.png" alt="Powered by Wikidata." width="150" height="41"/>](https://www.wikidata.org)
 and by [Open Multilingual Wordnet](http://compling.hss.ntu.edu.sg/omw/)
+
+0.2.0: Added Open Multilingual Wordnet synset as node type and as rel type
 # davar
 
  An experimental interpreted international auxilliary language that aims to be extremely easy to translate into other languages, through the use of external databases (currently [Wikidata](https://www.wikidata.org) and [Open Multilingual Wordnet](http://compling.hss.ntu.edu.sg/omw/)) for translation strings and very minimal grammar.
