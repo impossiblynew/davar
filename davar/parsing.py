@@ -10,11 +10,15 @@ def q_id(): return "Q", numerical_id
 
 def p_id(): return "P", numerical_id
 
-def node(): return [q_id, statement]
+def synset(): return _(r'\d{8}\-[v|r|n|a]')
+
+def node(): return [q_id, statement, synset]
+
+def rel(): return [p_id, synset]
 
 def edge(): return "(", node, node, ")"
 
-def labelededge(): return "(", p_id, node, node, ")"
+def labelededge(): return "(", rel, node, node, ")"
 
 def singletonstatement(): return "(", node, ")"
 
@@ -48,6 +52,14 @@ class DavarVisitor(PTNodeVisitor):
         if self.debug:
             print(f"Instantiating WikidataProperty from {children}.")
         return model.WikidataProperty(f"P{children[0]}")
+
+    def visit_synset(self, node, children):
+        """
+        Instantiates a OMWSynset for each synset
+        """
+        if self.debug:
+            print(f"Instantiating OMWSynset from {node.value}.")
+        return model.OMWSynset(node.value)
 
     def visit_edge(self, node, children):
         """

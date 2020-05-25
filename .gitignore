@@ -133,3 +133,6 @@ settings.json
 
 #poetry
 poetry.toml
+
+#nltk
+nltk_data

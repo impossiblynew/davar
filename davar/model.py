@@ -1,5 +1,7 @@
 from wikidata.client import Client
 from re import compile
+from nltk.corpus import wordnet as wn
+import pycountry
 
 
 class DavarWord:
@@ -107,6 +109,34 @@ class WikidataProperty(Rel):
         return self.data.label[lang]  # returns same regardless of level
 
 
+class OMWSynset(Node, Rel):
+    """
+    A synset from the open multilingual wordnet.
+    """
+
+    _compiled_id_regex = compile(r"\d{8}-[v|r|n|a]")
+
+    def __init__(self, id: str):
+        super().__init__(id)
+
+    @classmethod
+    def _validate_id(cls, id):
+        if cls._compiled_id_regex.fullmatch(id) == None:
+            raise ValueError(
+                f"{id} is not a valid Open Multilingual WordNet synset offset"
+            )
+
+    def describe(
+        self, lang: str, lvl: int = 0
+    ) -> str:  # FIXME: It is impossible to use this together with Wikidata items because they use a different language scheme.
+        """
+        Gives the lemma (name) of a Open Multilingual Wordnet synset in a language given in a 3 letter code 
+        """
+        return wn.synset_from_pos_and_offset(
+            self.id[-1], int(self.id[:-2])
+        ).lemma_names(_bcp_42_to_iso_639_2(lang))[0]
+
+
 class Statement:
     """
     Most basic possible statement, which involves only a subject.
@@ -193,3 +223,7 @@ class LabeledEdge(Edge):
             return f"{sub_label} → {ob_label} ({rel_label})."
         else:  # give utilitarian formatting if it is not
             return f"[{sub_label} → {ob_label} ({rel_label})]"
+
+
+def _bcp_42_to_iso_639_2(lang_code):
+    return pycountry.languages.get(alpha_2=lang_code).alpha_3

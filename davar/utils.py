@@ -1,5 +1,4 @@
 from davar.parsing import transcribe
-from davar.model import Statement
 
 
 class Davar:

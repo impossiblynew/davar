@@ -1,68 +1,78 @@
 from davar import parsing
-from davar import model
+from davar import model as m
 import pytest
 
 
 def test_transcribe_singletonStatement():
-    assert parsing.transcribe("(Q5)") == [model.Statement(model.WikidataItem("Q5"))]
+    assert parsing.transcribe("(Q5)") == [m.Statement(m.WikidataItem("Q5"))]
 
 
 def test_transcribe_Edge():
     assert parsing.transcribe("(Q42 Q5)") == [
-        model.Edge(model.WikidataItem("Q42"), model.WikidataItem("Q5"))
+        m.Edge(m.WikidataItem("Q42"), m.WikidataItem("Q5"))
     ]
 
 
 def test_transcribe_LabeledEdge():
     assert parsing.transcribe("(P31 Q42 Q5)") == [
-        model.LabeledEdge(
-            model.WikidataProperty("P31"),
-            model.WikidataItem("Q42"),
-            model.WikidataItem("Q5"),
+        m.LabeledEdge(
+            m.WikidataProperty("P31"), m.WikidataItem("Q42"), m.WikidataItem("Q5"),
         )
     ]
 
 
 def test_transcribe_multiple_LabeledEdges():
     assert parsing.transcribe("(P31 Q42 Q5) (P106 Q3236990 Q5482740)") == [
-        model.LabeledEdge(
-            model.WikidataProperty("P31"),
-            model.WikidataItem("Q42"),
-            model.WikidataItem("Q5"),
+        m.LabeledEdge(
+            m.WikidataProperty("P31"), m.WikidataItem("Q42"), m.WikidataItem("Q5"),
         ),
-        model.LabeledEdge(
-            model.WikidataProperty("P106"),
-            model.WikidataItem("Q3236990"),
-            model.WikidataItem("Q5482740"),
+        m.LabeledEdge(
+            m.WikidataProperty("P106"),
+            m.WikidataItem("Q3236990"),
+            m.WikidataItem("Q5482740"),
         ),
     ]
 
 
 def test_transcribe_multiple_Statements():
     assert parsing.transcribe("(Q5)(P31 Q42 Q5) (Q5 Q42) (P106 Q3236990 Q5482740)") == [
-        model.Statement(model.WikidataItem("Q5")),
-        model.LabeledEdge(
-            model.WikidataProperty("P31"),
-            model.WikidataItem("Q42"),
-            model.WikidataItem("Q5"),
+        m.Statement(m.WikidataItem("Q5")),
+        m.LabeledEdge(
+            m.WikidataProperty("P31"), m.WikidataItem("Q42"), m.WikidataItem("Q5"),
         ),
-        model.Edge(model.WikidataItem("Q5"), model.WikidataItem("Q42")),
-        model.LabeledEdge(
-            model.WikidataProperty("P106"),
-            model.WikidataItem("Q3236990"),
-            model.WikidataItem("Q5482740"),
+        m.Edge(m.WikidataItem("Q5"), m.WikidataItem("Q42")),
+        m.LabeledEdge(
+            m.WikidataProperty("P106"),
+            m.WikidataItem("Q3236990"),
+            m.WikidataItem("Q5482740"),
         ),
     ]
 
 
 def test_transcribe_nested_Statements():
     assert parsing.transcribe("(Q5482740 (P31 Q42 Q5))", debug=True) == [
-        model.Edge(
-            model.WikidataItem("Q5482740"),
-            model.LabeledEdge(
-                model.WikidataProperty("P31"),
-                model.WikidataItem("Q42"),
-                model.WikidataItem("Q5"),
+        m.Edge(
+            m.WikidataItem("Q5482740"),
+            m.LabeledEdge(
+                m.WikidataProperty("P31"), m.WikidataItem("Q42"), m.WikidataItem("Q5"),
             ),
+        )
+    ]
+
+
+def test_transcribe_OWNSynsets():
+    assert parsing.transcribe("(01835496-v 02084071-n 00110659-r)", debug=True) == [
+        m.LabeledEdge(
+            m.OMWSynset("01835496-v"),
+            m.OMWSynset("02084071-n"),
+            m.OMWSynset("00110659-r"),
+        )
+    ]
+
+
+def test_transcribe_mixed():
+    assert parsing.transcribe("(01704452-v Q42 03833065-n)", debug=True) == [
+        m.LabeledEdge(
+            m.OMWSynset("01704452-v"), m.WikidataItem("Q42"), m.OMWSynset("03833065-n"),
         )
     ]
