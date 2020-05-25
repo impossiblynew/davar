@@ -7,9 +7,7 @@ import __main__
 try:
     nltk.data.find(r"corpora/omw")
 except LookupError:
-    nltk.download(
-        "omw", r"./nltk_data"
-    )  # FIXME: #5 Tries to install even if already installed.`
+    nltk.download("omw", r"./nltk_data")
 
 __version__ = "0.1.1"
 name = "davar"
