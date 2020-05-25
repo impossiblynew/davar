@@ -76,7 +76,7 @@ class TestWikidataProperty:
 
 class TestOWNSynset:
     def test_describe(self):
-        assert m.OMWSynset("02084071-n").describe("eng") == "dog"
+        assert m.OMWSynset("02084071-n").describe("en") == "dog"
 
     def test_repr(self):
         assert repr(m.OMWSynset("02084071-n")) == 'OMWSynset("02084071-n")'
@@ -249,3 +249,7 @@ class TestLabeledEdgeNested:
             ).describe("en")
             == "Douglas Adams → [Douglas Adams → human (instance of)] (instance of)."
         )
+
+
+def test__bcp_42_to_iso_639_2():
+    assert m._bcp_42_to_iso_639_2("en") == "eng"

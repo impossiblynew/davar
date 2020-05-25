@@ -28,6 +28,7 @@ python = "^3.7"
 arpeggio = "^1.9.2"
 wikidata = "^0.6.1"
 nltk = "^3.5"
+pycountry = "^19.8.18"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.4.2"
