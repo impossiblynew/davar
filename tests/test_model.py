@@ -74,6 +74,21 @@ class TestWikidataProperty:
         assert str(cached_WikidataProperty_P31) == "P31"
 
 
+class TestOWNSynset:
+    def test_describe(self):
+        assert m.OMWSynset("02084071-n").describe("eng") == "dog"
+
+    def test_repr(self):
+        assert repr(m.OMWSynset("02084071-n")) == 'OMWSynset("02084071-n")'
+
+    def test_str(self):
+        assert str(m.OMWSynset("02084071-n")) == "02084071-n"
+
+    def test_validate(self):
+        with pytest.raises(ValueError):
+            m.OMWSynset("Q42")
+
+
 class TestStatement:
     def test_repr(self, cached_WikidataItem_Q42):
         s = m.Statement(cached_WikidataItem_Q42)
