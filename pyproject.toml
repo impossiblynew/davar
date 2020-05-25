@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "davar"
-version = "0.1.1"
+version = "0.2.0"
 description = "An experimental interpreted international auxiliary language."
 authors = ["Impossibly New <newlyimpossible@gmail.com>"]
 license = "MIT"
