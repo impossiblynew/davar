@@ -4,6 +4,8 @@ from davar.utils import Davar
 import nltk
 import __main__
 
+nltk.data.path.append(r"./nltk_data")
+
 try:
     nltk.data.find(r"corpora/omw")
 except LookupError:
@@ -14,7 +16,6 @@ try:
 except LookupError:
     nltk.download("wordnet", r"./nltk_data")
 
-nltk.data.path.append(r"./nltk_data")
 
 __version__ = "0.1.1"
 name = "davar"

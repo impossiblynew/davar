@@ -58,8 +58,8 @@ class DavarVisitor(PTNodeVisitor):
         Instantiates a OMWSynset for each synset
         """
         if self.debug:
-            print(f"Instantiating OMWSynset from {children}.")
-        return model.OMWSynset(children[0])
+            print(f"Instantiating OMWSynset from {node.value}.")
+        return model.OMWSynset(node.value)
 
     def visit_edge(self, node, children):
         """

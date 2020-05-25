@@ -60,12 +60,19 @@ def test_transcribe_nested_Statements():
     ]
 
 
-@pytest.mark.xfail
 def test_transcribe_OWNSynsets():
     assert parsing.transcribe("(01835496-v 02084071-n 00110659-r)", debug=True) == [
         m.LabeledEdge(
             m.OMWSynset("01835496-v"),
             m.OMWSynset("02084071-n"),
             m.OMWSynset("00110659-r"),
+        )
+    ]
+
+
+def test_transcribe_mixed():
+    assert parsing.transcribe("(01704452-v Q42 03833065-n)", debug=True) == [
+        m.LabeledEdge(
+            m.OMWSynset("01704452-v"), m.WikidataItem("Q42"), m.OMWSynset("03833065-n"),
         )
     ]
