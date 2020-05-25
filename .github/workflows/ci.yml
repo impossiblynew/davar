@@ -22,8 +22,8 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
       
-    - name: Python Poetry Action
-      uses: abatilo/actions-poetry@v1.0.0
+    - name: Setup Poetry
+      uses: Gr1N/setup-poetry@v2
       
     - name: Install Dependencies
       run: poetry install
