@@ -251,5 +251,5 @@ class TestLabeledEdgeNested:
         )
 
 
-def test__bcp_42_to_iso_639_2():
-    assert m._bcp_42_to_iso_639_2("en") == "eng"
+def test__bcp_47_to_iso_639_2():
+    assert m._bcp_47_to_iso_639_2("en") == "eng"

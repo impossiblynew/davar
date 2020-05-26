@@ -134,7 +134,7 @@ class OMWSynset(Node, Rel):
         """
         return wn.synset_from_pos_and_offset(
             self.id[-1], int(self.id[:-2])
-        ).lemma_names(_bcp_42_to_iso_639_2(lang))[0]
+        ).lemma_names(_bcp_47_to_iso_639_2(lang))[0]
 
 
 class Statement:
@@ -225,5 +225,5 @@ class LabeledEdge(Edge):
             return f"[{sub_label} → {ob_label} ({rel_label})]"
 
 
-def _bcp_42_to_iso_639_2(lang_code):
+def _bcp_47_to_iso_639_2(lang_code):
     return pycountry.languages.get(alpha_2=lang_code).alpha_3

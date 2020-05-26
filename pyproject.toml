@@ -34,6 +34,7 @@ pycountry = "^19.8.18"
 pytest = "^5.4.2"
 black = "^19.10b0"
 pylint = "^2.5.2"
+rope = "^0.17.0"
 
 [build-system]
 requires = ["poetry>=0.12"]
