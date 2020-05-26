@@ -2,7 +2,6 @@
 from davar.parsing import transcribe
 from davar.utils import Davar
 import nltk
-import __main__
 
 nltk.data.path.append(r"./nltk_data")
 
