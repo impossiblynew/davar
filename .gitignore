@@ -136,3 +136,6 @@ poetry.toml
 
 #nltk
 nltk_data
+
+#pycharm
+.idea/
