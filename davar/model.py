@@ -126,6 +126,26 @@ class OMWSynset(Node, Rel):
                 f"{id} is not a valid Open Multilingual WordNet synset offset"
             )
 
+    @staticmethod
+    def _bcp_47_to_iso_639_2(lang_tag: str) -> str:
+        """Utility function for turning BCP 47 language tags into ISO 639-2 language
+        tags.
+
+        Arguments:
+            lang_tag {str} -- Langauge tag/code in BCP 47
+
+        Returns:
+            str -- Rougly corresponding language code in ISO 639-2
+        """
+
+        if "-" in lang_tag:
+            lang_tag = lang_tag[: lang_tag.find("-")]
+        if len(lang_tag) == 3:
+            # three letter lang tags are already in alpha_3 format
+            return lang_tag
+        else:
+            return pycountry.languages.get(alpha_2=lang_tag).alpha_3
+
     def describe(
         self, lang: str, lvl: int = 0
     ) -> str:  # FIXME: It is impossible to use this together with Wikidata items because they use a different language scheme.
@@ -134,7 +154,7 @@ class OMWSynset(Node, Rel):
         """
         return wn.synset_from_pos_and_offset(
             self.id[-1], int(self.id[:-2])
-        ).lemma_names(_bcp_47_to_iso_639_2(lang))[0]
+        ).lemma_names(self._bcp_47_to_iso_639_2(lang))[0]
 
 
 class Statement:
@@ -225,5 +245,14 @@ class LabeledEdge(Edge):
             return f"[{sub_label} → {ob_label} ({rel_label})]"
 
 
-def _bcp_47_to_iso_639_2(lang_code):
-    return pycountry.languages.get(alpha_2=lang_code).alpha_3
+def _bcp_47_to_iso_639_2(lang_code: str) -> str:
+    """For backwards compatibility with 0.2.0, mirrors staticmethod of OMWSynset's
+    ._bcp_42_to_iso_639_2() method
+
+    Arguments:
+        lang_code {str} -- Lang tag/code in BCP 47
+
+    Returns:
+        str -- Lang tag/code in ISO 639-2
+    """
+    return OMWSynset._bcp_47_to_iso_639_2(lang_code)

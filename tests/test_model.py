@@ -88,6 +88,18 @@ class TestOWNSynset:
         with pytest.raises(ValueError):
             m.OMWSynset("Q42")
 
+    def test__bcp_47_to_iso_639_2_simple(self):
+        assert m.OMWSynset._bcp_47_to_iso_639_2("en") == "eng"
+
+    def test__bcp_47_to_iso_639_2_passthru(self):
+        assert m.OMWSynset._bcp_47_to_iso_639_2("ace") == "ace"
+
+    def test__bcp_47_to_iso_639_2_line(self):
+        assert m.OMWSynset._bcp_47_to_iso_639_2("hu-formal") == "hun"
+
+    def test__bcp_47_to_iso_639_2_line_passthru(self):
+        assert m.OMWSynset._bcp_47_to_iso_639_2("shi-latn") == "shi"
+
 
 class TestStatement:
     def test_repr(self, cached_WikidataItem_Q42):
