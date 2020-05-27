@@ -30,7 +30,7 @@ release = "0.2.0"
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ["autoapi.extension"]
+extensions = ["autoapi.extension", "sphinx.ext.napoleon"]
 autoapi_dirs = ["../davar"]
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
