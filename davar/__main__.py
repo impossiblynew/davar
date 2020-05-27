@@ -3,6 +3,8 @@ from davar.utils import Davar
 
 
 def main():
+    """Allows davar to be used as a commmand line tool
+    """
     parser = argparse.ArgumentParser(
         description="Command line tool for the davar experimental intepreted IAL."
     )
