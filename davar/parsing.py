@@ -1,9 +1,12 @@
+import arpeggio
 from arpeggio import OneOrMore, EOF, ParserPython, PTNodeVisitor, visit_parse_tree
 from arpeggio import RegExMatch as _
 from davar import model
 
 # define rules
 # fmt: off
+# The below "functions" are actually all arpeggio grammar rules and aren't meant to be
+# used as normal functions.
 def numerical_id(): return _(r'\d+')
 
 def q_id(): return "Q", numerical_id
@@ -29,6 +32,10 @@ def davar(): return OneOrMore(statement), EOF
 
 # visitor class
 class DavarVisitor(PTNodeVisitor):
+    """Visits each node of a graph of a davar text and turns it into a list of davar
+    Statements.
+    """
+
     def visit_numerical_id(self, node, children):
         """
         Converts numerical_id value to int.
@@ -102,18 +109,60 @@ class DavarVisitor(PTNodeVisitor):
         return list(children)
 
 
-def parse(davartext: str, debug: bool = False):
+def parse(davartext: str, debug: bool = False) -> arpeggio.NonTerminal:
+    """Parses a text string in davar into a list of davar Statements
+
+    Parameters
+    ----------
+    davartext : str
+        A text string written in davar
+    debug : bool, optional
+        If true, prints debug statements as davartext is parsed and places .dot files
+        representing said process into the project directory, by default False
+
+    Returns
+    -------
+    arpeggio.NonTerminal
+        Parse tree representing the entered text.
+    """
     parser = ParserPython(davar, debug=debug)
     return parser.parse(davartext)
 
 
 def visit(davartree, debug: bool = False) -> list:
+    """Visits a davar parse tree and transforms it into a list of davar statements.
+
+    Parameters
+    ----------
+    davartree : arpeggio.NonTerminal
+        Davar parse tree
+    debug : bool, optional
+        If true, prints debug statements as davartree is transformed and places .dot
+        files representing said process into the project directory, by default False
+
+    Returns
+    -------
+    list
+        List of davar Statements
+    """
     return visit_parse_tree(davartree, DavarVisitor(debug=debug))
 
 
 def transcribe(davartext: str, debug: bool = False) -> list:
-    """
-    Parses a text string in davartext into a list of Statements.
+    """Transcribes a string of text in davar into a list of davar Statements
+
+    Parameters
+    ----------
+    davartext : str
+        A string of text in
+    debug : bool, optional
+        If true, prints debug statements as davartext is transcribed and places .dot
+        files representing process into project directory, by default False
+
+    Returns
+    -------
+    list
+        List of davar Statements
     """
     parse_tree = parse(davartext, debug=debug)
     result = visit(parse_tree, debug=debug)
